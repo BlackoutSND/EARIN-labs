@@ -14,7 +14,7 @@ class TestMazeSolver(unittest.TestCase):
         finish = (4, 4)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
         lab1_v2.visualize_animation(viz, maze)
-        self.assertTrue(8,num_steps)
+        self.assertEqual(8,num_steps)
 
     def test_completely_blocked_path(self):
         maze = [
