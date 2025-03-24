@@ -61,7 +61,7 @@ def greedy(maze, start, finish):
     frontier.append((init_val, start))
     explored = {}
     while frontier:
-        sorted(frontier, key=lambda x: x[0])
+        frontier = sorted(frontier, key=lambda x: x[0])
         current = frontier.pop(0)
         explored[current[1]] = True
         if current[1] == finish:
@@ -78,7 +78,8 @@ def greedy(maze, start, finish):
     
 
 def heuristic(position, finish):
-    return (finish[0] + finish[1]) - (position[0] +position[1])
+    return pow(position[0] - finish[0], 2) + pow(position[1] - finish[1], 2)
+    # return abs(position[0] - finish[0]) + abs(position[1] - finish[1])
 
 
 def vizualize(viz, maze):
