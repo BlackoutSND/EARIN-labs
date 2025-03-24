@@ -8,9 +8,9 @@ def greedy(maze, start, finish):
     while frontier:
         sorted(frontier, key=lambda x: x[0])
         current = frontier.pop(0)
+        explored[current[1]] = True
         if current[1] == finish:
             return len(explored), explored
-        explored[current[1]] = True
         if(current[1][0]-1 >= 0 and maze[current[1][0]-1][current[1][1]] == 0 and (current[1][0]-1, current[1][1]) not in explored and (current[1][0]-1, current[1][1]) not in frontier):
             frontier.append((heuristic((current[1][0]-1, current[1][1]), finish), (current[1][0]-1, current[1][1])))
         if(current[1][0]+1 < len(maze) and maze[current[1][0]+1][current[1][1]] == 0 and (current[1][0]+1, current[1][1]) not in explored and (current[1][0]+1, current[1][1]) not in frontier):
@@ -36,7 +36,17 @@ def greedy(maze, start, finish):
     # Write your code here
 def heuristic(position, finish):
     return (finish[0] + finish[1]) - (position[0] +position[1])
-def vizualize(viz):
+def vizualize(viz, maze):
+    counter = 1
+    for val in viz:
+        print(f"Step: {counter}" )
+        for i in range(len(maze)):
+            if(i == val[0]):
+                maze[i][val[1]] = 8
+            print(maze[i])
+        print("\n")
+        counter+=1
+    
     """
     Vizualization function. Shows step by step the work of the search algorithm
 
@@ -67,4 +77,4 @@ else:
     print(f"No path from {start_position} to {finish_position} exists.")
 
 # Vizualize algorithm step-by-step even if the path was not found
-vizualize(viz)
+vizualize(viz, maze)
