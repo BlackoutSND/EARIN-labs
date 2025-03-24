@@ -40,6 +40,19 @@ def visualize_animation(viz, maze):
 
 
 def greedy(maze, start, finish):
+    """
+    Greedy best-first search
+
+    Parameters:
+    - maze: The 2D matrix that represents the maze with 0 represents empty space and 1 represents a wall
+    - start: A tuple with the coordinates of starting position
+    - finish: A tuple with the coordinates of finishing position
+
+    Returns:
+    - Number of steps from start to finish, equals -1 if the path is not found
+    - Viz - everything required for step-by-step vizualization
+    
+    """
     init_val = heuristic(start, finish)
     frontier = []
     frontier.append((init_val, start))
@@ -59,22 +72,12 @@ def greedy(maze, start, finish):
         if(current[1][1]+1 < len(maze[0]) and maze[current[1][0]][current[1][1]+1] == 0 and (current[1][0], current[1][1]+1) not in explored and (current[1][0], current[1][1]+1) not in frontier ):
             frontier.append((heuristic((current[1][0], current[1][1]+1), finish), (current[1][0], current[1][1]+1)))
     return (-1,-1)
-    """
-    Greedy best-first search
-
-    Parameters:
-    - maze: The 2D matrix that represents the maze with 0 represents empty space and 1 represents a wall
-    - start: A tuple with the coordinates of starting position
-    - finish: A tuple with the coordinates of finishing position
-
-    Returns:
-    - Number of steps from start to finish, equals -1 if the path is not found
-    - Viz - everything required for step-by-step vizualization
     
-    """
-    # Write your code here
+
 def heuristic(position, finish):
     return (finish[0] + finish[1]) - (position[0] +position[1])
+
+
 def vizualize(viz, maze):
     counter = 1
     for val in viz:
