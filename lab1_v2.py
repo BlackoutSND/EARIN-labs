@@ -62,18 +62,31 @@ def greedy(maze, start, finish):
     explored = {}
     while frontier:
         frontier = sorted(frontier, key=lambda x: x[0])
-        current = frontier.pop(0)
-        explored[current[1]] = True
-        if current[1] == finish:
+        current = frontier.pop(0)[1]
+        explored[current] = True
+
+        if current == finish:
             return len(explored), explored
-        if(current[1][0]-1 >= 0 and maze[current[1][0]-1][current[1][1]] == 0 and (current[1][0]-1, current[1][1]) not in explored and (current[1][0]-1, current[1][1]) not in frontier):
-            frontier.append((heuristic((current[1][0]-1, current[1][1]), finish), (current[1][0]-1, current[1][1])))
-        if(current[1][0]+1 < len(maze) and maze[current[1][0]+1][current[1][1]] == 0 and (current[1][0]+1, current[1][1]) not in explored and (current[1][0]+1, current[1][1]) not in frontier):
-            frontier.append((heuristic((current[1][0]+1, current[1][1]), finish), (current[1][0]+1, current[1][1])))
-        if(current[1][1]-1 >= 0 and maze[current[1][0]][current[1][1]-1] == 0 and (current[1][0], current[1][1]-1) not in explored and (current[1][0], current[1][1]-1) not in frontier):
-            frontier.append((heuristic((current[1][0], current[1][1]-1), finish), (current[1][0], current[1][1]-1)))
-        if(current[1][1]+1 < len(maze[0]) and maze[current[1][0]][current[1][1]+1] == 0 and (current[1][0], current[1][1]+1) not in explored and (current[1][0], current[1][1]+1) not in frontier ):
-            frontier.append((heuristic((current[1][0], current[1][1]+1), finish), (current[1][0], current[1][1]+1)))
+        x_mod = [-1, 1, 0, 0]
+        y_mod = [0, 0, -1, 1]
+        for i in range(0, 4):
+            if not current[0]+x_mod[i] >= 0:
+                continue
+            if not current[0]+x_mod[i] >= 0:
+                continue
+            if not current[0]+x_mod[i] < len(maze[0]):
+                continue
+            if not current[1] + y_mod[i] >= 0:
+                continue
+            if not current[1]+y_mod[i] < len(maze[1]):
+                continue
+            if not maze[current[0]+x_mod[i]][current[1] + y_mod[i]] == 0:
+                continue
+            if not (current[0]+x_mod[i], current[1] + y_mod[i]) not in explored:
+                continue
+            if not (current[0]+x_mod[i], current[1] + y_mod[i]) not in frontier:
+                continue
+            frontier.append((heuristic((current[0]+x_mod[i], current[1]+y_mod[i]), finish), (current[0]+x_mod[i], current[1]+y_mod[i])))
     return (-1,-1)
     
 
@@ -94,7 +107,7 @@ def vizualize(viz, maze):
             print(maze[i])
         print("\n")
         counter+=1
-    
+
     """
     Vizualization function. Shows step by step the work of the search algorithm
 
