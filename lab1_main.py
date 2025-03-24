@@ -2,20 +2,24 @@ import lab1_tests
 import lab1_v2
 
 if __name__ == "__main__":
-    lab1_tests.run_tests()
+    #lab1_tests.run_tests()
 
         
     # Example usage:
-    maze = [
-        [0, 1, 0, 0, 0],
-        [0, 1, 0, 1, 0],
-        [0, 0, 0, 1, 0],
-        [1, 0, 1, 0, 0],
-        [0, 0, 0, 1, 0]
-    ]
+    # maze = [
+    #     [0, 1, 0, 0, 0],
+    #     [0, 1, 0, 1, 0],
+    #     [0, 0, 0, 1, 0],
+    #     [1, 0, 1, 0, 0],
+    #     [0, 0, 0, 1, 0]
+    # ]
 
+    # start_position = (0, 0)
+    # finish_position = (4, 4)
+
+    maze = [[0] * 30 for _ in range(30)]
     start_position = (0, 0)
-    finish_position = (4, 4)
+    finish_position = (29, 29)
 
     num_steps, viz = lab1_v2.greedy(maze, start_position, finish_position)
 

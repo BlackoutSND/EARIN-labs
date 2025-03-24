@@ -6,6 +6,8 @@ import numpy as np
 
 
 def visualize_animation(viz, maze):
+    if type(viz) is int:
+        return
     fig, ax = plt.subplots()
     
     viz_list = list(viz.keys())
@@ -80,6 +82,8 @@ def heuristic(position, finish):
 
 
 def vizualize(viz, maze):
+    if type(viz) is int:
+        return
     counter = 1
     for val in viz:
         print(f"Step: {counter}" )
