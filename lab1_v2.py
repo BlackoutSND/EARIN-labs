@@ -4,6 +4,7 @@ import matplotlib.animation as animation
 import numpy as np
 
 
+
 def visualize_animation(viz, maze):
     fig, ax = plt.subplots()
     
@@ -93,28 +94,3 @@ def vizualize(viz, maze):
     - viz: everything required for step-by-step vizualization
     """
 
-
-# Example usage:
-maze = [
-    [0, 1, 0, 0, 0],
-    [0, 1, 0, 1, 0],
-    [0, 0, 0, 1, 0],
-    [1, 0, 1, 0, 0],
-    [0, 0, 0, 1, 0]
-]
-
-start_position = (0, 0)
-finish_position = (4, 4)
-
-num_steps, viz = greedy(maze, start_position, finish_position)
-
-# Print number of steps in path
-if num_steps != -1:
-    print(f"Path from {start_position} to {finish_position} using greedy best-first search is {num_steps} steps.")
-
-else:
-    print(f"No path from {start_position} to {finish_position} exists.")
-
-# Vizualize algorithm step-by-step even if the path was not found
-#vizualize(viz, maze)
-visualize_animation(viz, maze)
