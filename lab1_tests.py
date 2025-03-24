@@ -72,5 +72,66 @@ class TestMazeSolver(unittest.TestCase):
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
         self.assertTrue(result) 
 
+    def test_one_line_maze(self):
+        maze = [[0, 0, 0, 0, 0]]
+        start = (0, 0)
+        finish = (0, 4)
+
+        num_steps, viz = lab1_v2.greedy(maze, start, finish)
+        self.assertEqual(num_steps, 4)
+
+    def test_large_open_maze(self):
+        maze = [[0] * 30 for _ in range(30)]
+        start = (0, 0)
+        finish = (29, 29)
+        num_steps, viz = lab1_v2.greedy(maze, start, finish)
+        self.assertEqual(num_steps, 58)
+
+    def test_random_obstacles(self):
+        maze = [
+            [0, 1, 0, 1, 0],
+            [0, 0, 0, 1, 0],
+            [1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 1],
+            [0, 1, 0, 0, 0]
+        ]
+        start = (0, 0)
+        finish = (4, 4)
+        num_steps, viz = lab1_v2.greedy(maze, start, finish)
+        self.assertGreater(num_steps, 0)
+
+    def test_fully_blocked(self):
+        maze = [
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1]
+        ]
+        start = (0, 0)
+        finish = (4, 4)
+        num_steps, viz = lab1_v2.greedy(maze, start, finish)
+        self.assertEqual(num_steps, -1)
+
+    def test_entirely_empty(self):
+        maze = [
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0]
+        ]
+        start = (0, 0)
+        finish = (4, 4)
+        num_steps, viz = lab1_v2.greedy(maze, start, finish)
+        self.assertEqual(num_steps, 8)
+
+    def test_edge_case_1x1(self):
+        maze = [[0]]
+        start = (0, 0)
+        finish = (0, 0)
+        num_steps, viz = lab1_v2.greedy(maze, start, finish)
+        self.assertEqual(num_steps, 0)
+
 if __name__ == "__main__":
     unittest.main()
