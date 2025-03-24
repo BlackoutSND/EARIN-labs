@@ -1,4 +1,43 @@
 from collections import OrderedDict
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import numpy as np
+
+
+def visualize_animation(viz, maze):
+    fig, ax = plt.subplots()
+    
+    viz_list = list(viz.keys())
+    path_set = set()
+    
+    def update(step):
+        nonlocal path_set
+        temp_maze = np.array(maze)
+        
+        if step == 0:
+            path_set.clear()
+        
+        display_maze = np.ones_like(temp_maze, dtype=np.float32) 
+        display_maze[temp_maze == 1] = 0.0 
+        
+        img = np.dstack([display_maze, display_maze, display_maze])  
+        
+        if step < len(viz_list):
+            path_set.add(viz_list[step])
+        
+        for y, x in path_set:
+            img[y, x] = [1, 0, 0]
+        
+        ax.clear()
+        ax.imshow(img)
+        ax.set_title(f"Step: {step + 1}")
+        ax.set_xticks([])
+        ax.set_yticks([])
+    
+    ani = animation.FuncAnimation(fig, update, frames=len(viz_list), interval=500, repeat=True)
+    plt.show()
+
+
 
 def greedy(maze, start, finish):
     init_val = heuristic(start, finish)
@@ -77,4 +116,5 @@ else:
     print(f"No path from {start_position} to {finish_position} exists.")
 
 # Vizualize algorithm step-by-step even if the path was not found
-vizualize(viz, maze)
+#vizualize(viz, maze)
+visualize_animation(viz, maze)
