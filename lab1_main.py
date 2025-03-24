@@ -2,7 +2,7 @@ import lab1_tests
 import lab1_v2
 
 if __name__ == "__main__":
-    #lab1_tests.main()
+    lab1_tests.run_tests()
 
         
     # Example usage:
