@@ -14,9 +14,12 @@ class TestMazeSolver(unittest.TestCase):
         start = (0, 0)
         finish = (4, 4)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        #lab1_v2.visualize_animation(viz, maze)
-        print(num_steps)
-        self.assertEqual(8,num_steps)
+
+        actual_viz = {(0, 0): True, (1, 0): True, (2, 0): True, (3, 0): True, (4, 0): True, 
+                      (4, 1): True, (4, 2): True, (3, 2): True, (3, 3): True, (3, 4): True, (4, 4): True}
+        
+        self.assertEqual(viz, actual_viz)
+
 
     def test_completely_blocked_path(self):
         maze = [
@@ -29,10 +32,12 @@ class TestMazeSolver(unittest.TestCase):
         start = (0, 0)
         finish = (4, 4)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        #print(num_steps)
-        self.assertEqual(num_steps==-1)
+   
+        actual_viz = -1
+        self.assertEqual(viz, actual_viz)
 
-    def test_multiple_paths_available(self):
+
+    def test_one_paths_available(self):
         maze = [
             [0, 0, 0, 1, 0],
             [1, 1, 0, 1, 0],
@@ -43,8 +48,13 @@ class TestMazeSolver(unittest.TestCase):
         start = (0, 0)
         finish = (4, 4)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        print(num_steps)
-        self.assertEqual(num_steps==13) 
+
+        actual_viz = {(0, 0): True, (0, 1): True, (0, 2): True, (1, 2): True, (2, 2): True, 
+                      (2, 1): True, (2, 0): True, (3, 0): True, (4, 0): True, (4, 1): True, 
+                      (4, 2): True, (4, 3): True, (4, 4): True}
+        
+        self.assertEqual(viz, actual_viz) 
+
 
     def test_one_narrow_path(self):
         maze = [
@@ -57,8 +67,12 @@ class TestMazeSolver(unittest.TestCase):
         start = (0, 0)
         finish = (4, 4)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        print(num_steps)
-        self.assertTrue(num_steps==9) 
+   
+        actual_viz = {(0, 0): True, (1, 0): True, (1, 1): True, (1, 2): True, (1, 3): True, 
+                      (2, 3): True, (3, 3): True, (4, 3): True, (4, 4): True}
+        
+        self.assertEqual(viz, actual_viz) 
+
 
     def test_start_equals_finish(self):
         maze = [
@@ -71,24 +85,52 @@ class TestMazeSolver(unittest.TestCase):
         start = (2, 2)
         finish = (2, 2)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        print(num_steps)
-        self.assertTrue(num_steps==1) 
+        
+        self.assertTrue(viz == {(2, 2): True}) 
 
-    def test_one_line_maze(self):
+
+    def test_one_horizontal_line_maze(self):
         maze = [[0, 0, 0, 0, 0]]
         start = (0, 0)
         finish = (0, 4)
 
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        self.assertEqual(num_steps, 4)
+
+        actual_viz = {(0, 0): True, (0, 1): True, (0, 2): True, (0, 3): True, (0, 4): True}
+        self.assertEqual(viz, actual_viz)
+
+    
+    def test_one_vertical_line_maze(self):
+        maze = [[0], [0], [0], [0], [0]]
+        start = (0, 0)
+        finish = (4, 0)
+
+        num_steps, viz = lab1_v2.greedy(maze, start, finish)
+
+        actual_viz = {(0, 0): True, (1, 0): True, (2, 0): True, (3, 0): True, (4, 0): True}
+        self.assertEqual(viz, actual_viz)
 
     def test_large_open_maze(self):
         maze = [[0] * 30 for _ in range(30)]
         start = (0, 0)
         finish = (29, 29)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        print(num_steps)
-        self.assertEqual(num_steps, 58)
+
+        actual_viz = {(0, 0): True, (1, 0): True, (1, 1): True, (2, 1): True, (2, 2): True, 
+                      (3, 2): True, (3, 3): True, (4, 3): True, (4, 4): True, (5, 4): True, 
+                      (5, 5): True, (6, 5): True, (6, 6): True, (7, 6): True, (7, 7): True, 
+                      (8, 7): True, (8, 8): True, (9, 8): True, (9, 9): True, (10, 9): True, 
+                      (10, 10): True, (11, 10): True, (11, 11): True, (12, 11): True, 
+                      (12, 12): True, (13, 12): True, (13, 13): True, (14, 13): True, (14, 14): True, 
+                      (15, 14): True, (15, 15): True, (16, 15): True, (16, 16): True, (17, 16): True, 
+                      (17, 17): True, (18, 17): True, (18, 18): True, (19, 18): True, (19, 19): True, 
+                      (20, 19): True, (20, 20): True, (21, 20): True, (21, 21): True, (22, 21): True, 
+                      (22, 22): True, (23, 22): True, (23, 23): True, (24, 23): True, (24, 24): True, 
+                      (25, 24): True, (25, 25): True, (26, 25): True, (26, 26): True, (27, 26): True, 
+                      (27, 27): True, (28, 27): True, (28, 28): True, (29, 28): True, (29, 29): True}
+        
+        self.assertEqual(viz, actual_viz)
+
 
     def test_random_obstacles(self):
         maze = [
@@ -101,8 +143,12 @@ class TestMazeSolver(unittest.TestCase):
         start = (0, 0)
         finish = (4, 4)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        print(num_steps)
-        self.assertGreater(num_steps, 0)
+
+        actual_viz = {(0, 0): True, (1, 0): True, (1, 1): True, (1, 2): True, (2, 2): True, 
+                      (3, 2): True, (4, 2): True, (4, 3): True, (4, 4): True}
+
+        self.assertEqual(viz, actual_viz)
+
 
     def test_fully_blocked(self):
         maze = [
@@ -115,8 +161,8 @@ class TestMazeSolver(unittest.TestCase):
         start = (0, 0)
         finish = (4, 4)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        print(num_steps)
-        self.assertEqual(num_steps, -1)
+        self.assertEqual(viz, -1)
+
 
     def test_entirely_empty(self):
         maze = [
@@ -129,20 +175,19 @@ class TestMazeSolver(unittest.TestCase):
         start = (0, 0)
         finish = (4, 4)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        print(num_steps)
-        self.assertEqual(num_steps, 8)
+        actual_viz = {(0, 0): True, (1, 0): True, (1, 1): True, (2, 1): True, (2, 2): True, 
+                      (3, 2): True, (3, 3): True, (4, 3): True, (4, 4): True}
+        
+        self.assertEqual(viz, actual_viz)
+
 
     def test_edge_case_1x1(self):
         maze = [[0]]
         start = (0, 0)
         finish = (0, 0)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        print(num_steps)
-        self.assertEqual(num_steps, 0)
-
-# def run_tests():
-#     suite = unittest.TestLoader().loadTestsFromTestCase(TestMazeSolver)
-#     unittest.TextTestRunner(verbosity=2).run(suite)
+        
+        self.assertEqual(viz, {(0, 0): True})
 
 
 def run_tests():

@@ -71,14 +71,12 @@ def greedy(maze, start, finish):
         y_mod = [0, 0, -1, 1]
         for i in range(0, 4):
             if not current[0]+x_mod[i] >= 0:
-                continue
-            if not current[0]+x_mod[i] >= 0:
-                continue
-            if not current[0]+x_mod[i] < len(maze[0]):
+                continue 
+            if not current[0]+x_mod[i] < len(maze):
                 continue
             if not current[1] + y_mod[i] >= 0:
                 continue
-            if not current[1]+y_mod[i] < len(maze[1]):
+            if not current[1]+y_mod[i] < len(maze[0]):
                 continue
             if not maze[current[0]+x_mod[i]][current[1] + y_mod[i]] == 0:
                 continue
