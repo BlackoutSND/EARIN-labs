@@ -55,4 +55,4 @@ if __name__ == "__main__":
 
     # Vizualize algorithm step-by-step even if the path was not found
     #vizualize(viz, maze)
-    lab1_v2.visualize_animation(viz, maze, save_as_gif=True, gif_name="bruh.gif")
+    lab1_v2.visualize_animation(viz, maze, save_as_gif=True, gif_name="brdsffdsfdsh.gif")

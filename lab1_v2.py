@@ -2,11 +2,9 @@ from collections import OrderedDict
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
-
-
 from PIL import Image
 
-def visualize_animation(viz, maze, save_as_gif=False, gif_name="mazik.gif"):
+def visualize_animation(viz, maze, save_as_gif=False, gif_name="maze_animation.gif"):
     if isinstance(viz, int) or not viz:
         print("Visualization data is empty or invalid.")
         return
@@ -41,7 +39,10 @@ def visualize_animation(viz, maze, save_as_gif=False, gif_name="mazik.gif"):
         ax.set_yticks([])
 
         fig.canvas.draw()
-        frame = Image.frombytes('RGB', fig.canvas.get_width_height(), fig.canvas.tostring_rgb())
+
+        renderer = fig.canvas.get_renderer()
+        frame = Image.frombytes('RGBA', fig.canvas.get_width_height(), renderer.buffer_rgba())
+        
         frames.append(frame)
 
     for step in range(len(viz_list)):
