@@ -1,6 +1,6 @@
 # <div style="text-align: center;"> Laboratory 1  </div >
 # <div style="text-align: center;"> Variant 2  </div >
-# <div style="text-align: center;"> By Sevastian Bortsevich Yermukhamed Islam  </div >
+# <div style="text-align: center;"> By Sevastian Bortsevich, Yermukhamed Islam  </div >
 ## Introduction ##
 The task is to solve a maze using the Greedy Best-First Search algorithm and visualize the process. This algorithm is commonly used for pathfinding and graph traversal. It makes decisions based on a heuristic function that estimates the distance from the current position to the goal. 
 
