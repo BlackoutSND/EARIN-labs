@@ -4,38 +4,55 @@ import matplotlib.animation as animation
 import numpy as np
 
 
-def visualize_animation(viz, maze):
-    if type(viz) is int:
+from PIL import Image
+
+def visualize_animation(viz, maze, save_as_gif=False, gif_name="mazik.gif"):
+    if isinstance(viz, int) or not viz:
+        print("Visualization data is empty or invalid.")
         return
-    fig, ax = plt.subplots()
     
+    fig, ax = plt.subplots()
     viz_list = list(viz.keys())
     path_set = set()
-    
+    frames = []
+
     def update(step):
         nonlocal path_set
         temp_maze = np.array(maze)
-        
+
         if step == 0:
             path_set.clear()
-        
+
         display_maze = np.ones_like(temp_maze, dtype=np.float32) 
         display_maze[temp_maze == 1] = 0.0 
-        
+
         img = np.dstack([display_maze, display_maze, display_maze])  
-        
+
         if step < len(viz_list):
             path_set.add(viz_list[step])
-        
+
         for y, x in path_set:
             img[y, x] = [1, 0, 0]
-        
+
         ax.clear()
         ax.imshow(img)
         ax.set_title(f"Step: {step + 1}")
         ax.set_xticks([])
         ax.set_yticks([])
-    
+
+        fig.canvas.draw()
+        frame = Image.frombytes('RGB', fig.canvas.get_width_height(), fig.canvas.tostring_rgb())
+        frames.append(frame)
+
+    for step in range(len(viz_list)):
+        update(step)
+
+    if save_as_gif and frames:
+        frames[0].save(gif_name, save_all=True, append_images=frames[1:], duration=500, loop=0)
+        print(f"GIF saved as {gif_name}")
+    elif save_as_gif:
+        print("No frames were captured. GIF was not saved.")
+
     ani = animation.FuncAnimation(fig, update, frames=len(viz_list), interval=500, repeat=True)
     plt.show()
 
