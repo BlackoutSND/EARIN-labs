@@ -1,5 +1,6 @@
 import unittest
 import lab1_v2
+import pytest
 
 class TestMazeSolver(unittest.TestCase):
     def test_simple_open_path(self):
@@ -13,7 +14,7 @@ class TestMazeSolver(unittest.TestCase):
         start = (0, 0)
         finish = (4, 4)
         num_steps, viz = lab1_v2.greedy(maze, start, finish)
-        lab1_v2.visualize_animation(viz, maze)
+        #lab1_v2.visualize_animation(viz, maze)
         print(num_steps)
         self.assertEqual(8,num_steps)
 
@@ -139,9 +140,13 @@ class TestMazeSolver(unittest.TestCase):
         print(num_steps)
         self.assertEqual(num_steps, 0)
 
+# def run_tests():
+#     suite = unittest.TestLoader().loadTestsFromTestCase(TestMazeSolver)
+#     unittest.TextTestRunner(verbosity=2).run(suite)
+
+
 def run_tests():
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestMazeSolver)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    pytest.main(["-s", "/home/yermukhamed/Desktop/EARIN/EARIN-labs/lab1_tests.py"])
 
 if __name__ == "__main__":
     run_tests()
