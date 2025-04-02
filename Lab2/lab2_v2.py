@@ -1,7 +1,5 @@
 import copy
 import random
-import os
-import time
 
 EMPTY = ' '
 PLAYER_X = 'X'
@@ -220,19 +218,15 @@ def main():
     """
     Main game loop implementation. Player1 should play first with 'X', player2 plays second with 'O'
     """
-    os.system('cls' if os.name == 'nt' else 'clear') # Clear the console
-
     player_piece = input("Choose your piece (X or O): ").upper()
-    while player_piece.capitalize() not in [PLAYER_X, PLAYER_O]:
-        os.system('cls' if os.name == 'nt' else 'clear')
+    while player_piece not in [PLAYER_X, PLAYER_O]:
         player_piece = input("Invalid choice. Choose X or O: ").upper()
     game = ConnectFour(player_piece)
-    
-    os.system('cls' if os.name == 'nt' else 'clear') 
+    #minOrMax = True if game.ai_piece == PLAYER_X else False
     game.print_board()
 
     while True:
-        if len(game.get_valid_columns()) == 0:
+        if(len(game.get_valid_columns())) == 0:
             print("Bruh, draw...")
             break
         if game.current_player == game.player_piece:
@@ -244,11 +238,8 @@ def main():
         else:
             col, _ = game.minimax(game.board, 4, True, -float('inf'), float('inf'))
             print(f"AI chooses column {col}")
-            time.sleep(1)  # Add a delay for better animation effect
-
         if col in game.get_valid_columns():
             game.drop_piece(game.board, col, game.current_player)
-            os.system('cls' if os.name == 'nt' else 'clear') 
             game.print_board()
             if game.winning_move(game.board, game.current_player):
                 print(f"Player {game.current_player} wins!")
