@@ -181,7 +181,7 @@ class ConnectFour:
         is_terminal = self.winning_move(board, PLAYER_X) or self.winning_move(board, PLAYER_O) or len(valid_columns) == 0
         
         if depth == 0 or is_terminal:
-            return 0,self.evaluate_position(board, PLAYER_O) - self.evaluate_position(board, PLAYER_X)
+            return 0,self.evaluate_position(board, self.ai_piece) - self.evaluate_position(board, self.player_piece)
         
         if maximizing_player:
             value = -float('inf')
@@ -224,7 +224,6 @@ def main():
     game = ConnectFour(player_piece)
     #minOrMax = True if game.ai_piece == PLAYER_X else False
     game.print_board()
-
     while True:
         if(len(game.get_valid_columns())) == 0:
             print("Bruh, draw...")
