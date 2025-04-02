@@ -11,12 +11,14 @@ COLS = 7
 class ConnectFour:
     """
     Class for game Connect 4
+
     """
+
     def __init__(self, player_piece):
         self.board = [[EMPTY] * COLS for _ in range(ROWS)]
+        self.current_player = PLAYER_X
         self.player_piece = player_piece
         self.ai_piece = PLAYER_O if player_piece == PLAYER_X else PLAYER_X
-        self.current_player = PLAYER_X
 
     def print_board(self):
         for row in self.board:
@@ -24,6 +26,8 @@ class ConnectFour:
         print('-' * (COLS * 2 - 1))
         print(' '.join(str(i) for i in range(COLS)))
 
+    # Implement any additional functions needed here
+    
     def drop_piece(self, board, col, piece):
         for row in reversed(range(ROWS)):
             if board[row][col] == EMPTY:
@@ -31,47 +35,133 @@ class ConnectFour:
                 return True
         return False
 
-    def is_valid_location(self, col):
-        return self.board[0][col] == EMPTY
-
     def get_valid_columns(self):
-        return [c for c in range(COLS) if self.is_valid_location(c)]
+        return [col for col in range(COLS) if self.board[0][col] == EMPTY]
 
     def winning_move(self, board, piece):
-        # Check horizontals
+        # Check all directions
         for r in range(ROWS):
-            for c in range(COLS - 3):
-                if all(board[r][c + i] == piece for i in range(4)):
-                    return True
-        # Check vertvals
-        for r in range(ROWS - 3):
             for c in range(COLS):
-                if all(board[r + i][c] == piece for i in range(4)):
+                # Horizontal (right)
+                if c + 3 < COLS and all(board[r][c + i] == piece for i in range(4)):
                     return True
-        # Check diagonals r->l
-        for r in range(ROWS - 3):
-            for c in range(COLS - 3):
-                if all(board[r + i][c + i] == piece for i in range(4)):
+                # Vertical (down)
+                if r + 3 < ROWS and all(board[r + i][c] == piece for i in range(4)):
                     return True
-        # Check diagonals l->r
-        for r in range(3, ROWS):
-            for c in range(COLS - 3):
-                if all(board[r - i][c + i] == piece for i in range(4)):
+                # Diagonal (down-right)
+                if r + 3 < ROWS and c + 3 < COLS and all(board[r + i][c + i] == piece for i in range(4)):
                     return True
-
+                # Diagonal (down-left)
+                if r + 3 < ROWS and c - 3 >= 0 and all(board[r + i][c - i] == piece for i in range(4)):
+                    return True
         return False
 
+    def evaluate_window(self, window, piece):
+        """
+        Evaluation of given window. Helper function to evaluate the separate parts of the board called windows
+
+        Parameters:
+        - window: list containing values of evaluated window
+        - piece: PLAYER_X or PLAYER_O depending on which player's position we evaluate
+
+        Returns:
+        - score of the window
+
+        """
+        maxCount = 0
+        count = 0
+        for i in range(4):
+            if window[i] == piece or window[i] == None:
+                count += 1
+            else:
+                if count > maxCount:
+                    maxCount = count
+                count = 0
+        return maxCount
+
+    def evaluate_position(self, board, piece):
+        """
+        Evaluation of position
+        Parameters:
+        - board: 2d matrix representing evaluated state of the board
+        - piece: PLAYER_X or PLAYER_O depending on which player's position we evaluate
+
+        Returns:
+        - score of the position
+
+        """
+        # Calculate horizontal locations
+        max_score = 0
+        for r in range(ROWS):
+            for c in range(COLS - 3):
+                if board[r][c] == piece:
+                    temp_score = 0
+                    for i in range(4):
+                        if board[r][c + i] == piece:
+                            temp_score += 1
+                    if temp_score > max_score:
+                        max_score = temp_score
+
+        # Calculate vertical locations
+        for r in range(ROWS - 3):
+            for c in range(COLS):
+                if board[r][c] == piece:
+                    temp_score = 0
+                    for i in range(4):
+                        if board[r + i][c] == piece:
+                            temp_score += 1
+                    if temp_score > max_score:
+                        max_score = temp_score
+
+        # Calculate positively sloped diagonals
+        for r in range(ROWS - 3):
+            for c in range(COLS - 3):
+                if board[r][c] == piece:
+                    temp_score = 0
+                    for i in range(4):
+                        if board[r + i][c + i] == piece:
+                            temp_score += 1
+                    if temp_score > max_score:
+                        max_score = temp_score
+
+        # Calculate negatively sloped diagonals
+        for r in range(3, ROWS):
+            for c in range(COLS - 3):
+                if board[r][c] == piece:
+                    temp_score = 0
+                    for i in range(4):
+                        if board[r - i][c + i] == piece:
+                            temp_score += 1
+                    if temp_score > max_score:
+                        max_score = temp_score
+
+        return max_score
+    
+
+    
     def minimax(self, board, depth, maximizing_player, alpha, beta):
+        """
+        Minimax with alpha-beta pruning algorithm
+
+        Parameters:
+        - board: 2d matrix representing the state, each cell contains either ' ' (empty cell), 'X' (player1), or 'O' (player2) 
+        - depth: depth
+        - maximizing_player: boolean which is equal to True when the player tries to maximize the score
+        - alpha: alpha variable for pruning
+        - beta: beta variable for pruning
+
+        Returns:
+        - Best value 
+        - Best move found
+
+        """
+
+        #Your code starts here
         valid_columns = self.get_valid_columns()
         is_terminal = self.winning_move(board, PLAYER_X) or self.winning_move(board, PLAYER_O) or len(valid_columns) == 0
         
         if depth == 0 or is_terminal:
-            if self.winning_move(board, PLAYER_X):
-                return (None, 1000000)
-            elif self.winning_move(board, PLAYER_O):
-                return (None, -1000000)
-            else:
-                return (None, 0)
+            return 0,self.evaluate_position(board, PLAYER_O) - self.evaluate_position(board, PLAYER_X)
         
         if maximizing_player:
             value = -float('inf')
@@ -101,23 +191,33 @@ class ConnectFour:
                 if alpha >= beta:
                     break
             return best_col, value
+            
 
 
 def main():
+    """
+    Main game loop implementation. Player1 should play first with 'X', player2 plays second with 'O'
+    """
     player_piece = input("Choose your piece (X or O): ").upper()
     while player_piece not in [PLAYER_X, PLAYER_O]:
         player_piece = input("Invalid choice. Choose X or O: ").upper()
-    
     game = ConnectFour(player_piece)
+    #minOrMax = True if game.ai_piece == PLAYER_X else False
     game.print_board()
-    
+
     while True:
+        if(len(game.get_valid_columns())) == 0:
+            print("Bruh, draw...")
+            break
         if game.current_player == game.player_piece:
-            col = int(input(f"Player {game.current_player}, choose a column (0-{COLS - 1}): "))
+            try:
+                col = int(input(f"Player {game.current_player}, choose a column (0-{COLS - 1}): "))
+            except ValueError:
+                print("Invalid input. Please enter a valid column number.")
+                continue
         else:
             col, _ = game.minimax(game.board, 4, True, -float('inf'), float('inf'))
-            print(f"Bot chooses column {col}")
-        
+            print(f"AI chooses column {col}")
         if col in game.get_valid_columns():
             game.drop_piece(game.board, col, game.current_player)
             game.print_board()
@@ -127,7 +227,6 @@ def main():
             game.current_player = game.ai_piece if game.current_player == game.player_piece else game.player_piece
         else:
             print("Invalid move. Try again.")
-
 
 if __name__ == "__main__":
     main()
