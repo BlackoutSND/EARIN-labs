@@ -99,6 +99,11 @@ class ConnectFour:
                     for i in range(4):
                         if board[r][c + i] == piece:
                             temp_score += 1
+                        elif board[r][c + i] == None:    
+                            temp_score += 1
+                            break
+                        else:
+                            break
                     if temp_score > max_score:
                         max_score = temp_score
 
@@ -110,6 +115,11 @@ class ConnectFour:
                     for i in range(4):
                         if board[r + i][c] == piece:
                             temp_score += 1
+                        elif board[r + i][c] == None:    
+                            temp_score += 1
+                            break
+                        else:
+                            break
                     if temp_score > max_score:
                         max_score = temp_score
 
@@ -121,6 +131,11 @@ class ConnectFour:
                     for i in range(4):
                         if board[r + i][c + i] == piece:
                             temp_score += 1
+                        elif r + i > 0 and board[r + i][c + i] == None and board[r + i - 1][c + i] != None:
+                            temp_score += 1
+                            break
+                        else:
+                            break
                     if temp_score > max_score:
                         max_score = temp_score
 
@@ -132,6 +147,11 @@ class ConnectFour:
                     for i in range(4):
                         if board[r - i][c + i] == piece:
                             temp_score += 1
+                        elif r - i > 0 and board[r - i][c + i] == None and board[r - i-1][c + i]  != None:
+                            temp_score += 1
+                            break
+                        else:
+                            break
                     if temp_score > max_score:
                         max_score = temp_score
 
