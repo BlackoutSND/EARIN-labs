@@ -92,18 +92,25 @@ class ConnectFour:
         """
         # Calculate horizontal locations
         max_score = 0
+        nOfPieces = 0
         for r in range(ROWS):
             for c in range(COLS - 3):
                 if board[r][c] == piece:
                     temp_score = 0
+                    nOfPieces = 0
                     for i in range(4):
                         if board[r][c + i] == piece:
                             temp_score += 1
+                            nOfPieces += 1
                         elif board[r][c + i] == None:    
                             temp_score += 1
                             break
                         else:
                             break
+                    if nOfPieces == 4:
+                        temp_score*=100
+                    elif nOfPieces == 3:
+                        temp_score*=2
                     if temp_score > max_score:
                         max_score = temp_score
 
@@ -112,14 +119,20 @@ class ConnectFour:
             for c in range(COLS):
                 if board[r][c] == piece:
                     temp_score = 0
+                    nOfPieces = 0
                     for i in range(4):
                         if board[r + i][c] == piece:
                             temp_score += 1
+                            nOfPieces += 1
                         elif board[r + i][c] == None:    
                             temp_score += 1
                             break
                         else:
                             break
+                    if nOfPieces == 4:
+                        temp_score*=100
+                    elif nOfPieces == 3:
+                        temp_score*=2
                     if temp_score > max_score:
                         max_score = temp_score
 
@@ -128,14 +141,20 @@ class ConnectFour:
             for c in range(COLS - 3):
                 if board[r][c] == piece:
                     temp_score = 0
+                    nOfPieces = 0
                     for i in range(4):
                         if board[r + i][c + i] == piece:
                             temp_score += 1
+                            nOfPieces += 1
                         elif r + i > 0 and board[r + i][c + i] == None and board[r + i - 1][c + i] != None:
                             temp_score += 1
                             break
                         else:
                             break
+                    if nOfPieces == 4:
+                        temp_score*=100
+                    elif nOfPieces == 3 and temp_score == 4:
+                        temp_score*=2
                     if temp_score > max_score:
                         max_score = temp_score
 
@@ -144,14 +163,20 @@ class ConnectFour:
             for c in range(COLS - 3):
                 if board[r][c] == piece:
                     temp_score = 0
+                    nOfPieces = 0
                     for i in range(4):
                         if board[r - i][c + i] == piece:
                             temp_score += 1
+                            nOfPieces += 1
                         elif r - i > 0 and board[r - i][c + i] == None and board[r - i-1][c + i]  != None:
                             temp_score += 1
                             break
                         else:
                             break
+                    if nOfPieces == 4:
+                        temp_score*=100
+                    elif nOfPieces == 3 and temp_score == 4:
+                        temp_score*=2
                     if temp_score > max_score:
                         max_score = temp_score
 
